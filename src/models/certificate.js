@@ -1,14 +1,5 @@
 const mongoose = require("mongoose");
 
-/**
- * - certificate_id
-- batch_id
-- user_id
-- certificate_type (Participation, Winner, Volunteer)
-- certificate_url
-- revoked (boolean)
-- revoked_reason (nullable)
- */
 const certificateSchema = new mongoose.Schema({
     batchId: {type: mongoose.Schema.Types.ObjectId, ref: "CertificateBatch", required: true },
     userId: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
