@@ -1,0 +1,19 @@
+{
+  "name": "digital-certificate-generation-and-approval-workflow",
+  "version": "1.0.0",
+  "description": "Certificate Generation and Approval System. A Role-Based and Auditable Workflow for Digital Certificate Issuance",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codewkaushik404/Digital-Certificate-Generation-and-Approval-Workflow.git"
+  },
+  "author": "KAUSHIK K.S.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/codewkaushik404/Digital-Certificate-Generation-and-Approval-Workflow/issues"
+  },
+  "homepage": "https://github.com/codewkaushik404/Digital-Certificate-Generation-and-Approval-Workflow#readme"
+}
