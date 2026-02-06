@@ -7,7 +7,7 @@ const positionSchema = new mongoose.Schema({
         required: true,
     },    
     description: { type: String, trim: true },
-    scope: { type: String, enum: ['CLUB', 'CELL'], required: true }   
+    scope: { type: String, enum: ['CLUB', 'CELL', 'COLLEGE'], required: true }   
 }, {timestamps: true} );
 
 const Position = mongoose.model("Position",positionSchema);

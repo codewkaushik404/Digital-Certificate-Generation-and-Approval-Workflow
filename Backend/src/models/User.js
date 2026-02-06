@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
 //when using async function next is not used
 userSchema.pre("save", async function(){
     if(!this.isModified("password")) return;
-    console.log("Inside prev-save hook");
+    //console.log("Inside prev-save hook");
     this.password = await bcrypt.hash(this.password, 12);
 })
 
