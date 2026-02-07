@@ -8,9 +8,13 @@ import {
   FieldSeparator,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { useState } from "react"
+import AlertBasic from "./Alert"
 //import { useState } from "react"
 
 export default function SignupStepOne({ className, ...props }) {
+
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   function handleChange(e){
     const {id, value} = e.target
@@ -22,6 +26,12 @@ export default function SignupStepOne({ className, ...props }) {
   
   function handleSubmitOne(e){
     e.preventDefault();
+
+    if(props.form.password !== confirmPassword){
+      return (
+      <AlertBasic alert={{type: "error", message: "Entered Password doesn't match with confirmed password"}}/>
+      );
+    }
     props.setStep((step) => step+1);
   }
   return (
@@ -51,7 +61,8 @@ export default function SignupStepOne({ className, ...props }) {
         
         <Field>
           <FieldLabel htmlFor="confirm-password">Confirm Password</FieldLabel>
-          <Input id="confirm-password" type="password" required />
+          <Input id="confirm-password" type="password" 
+          value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
           <FieldDescription>Please confirm your password.</FieldDescription>
         </Field>
 

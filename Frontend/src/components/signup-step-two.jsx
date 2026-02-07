@@ -31,7 +31,7 @@ export default function SignupStepTwo({className, ...props}) {
   async function handleSubmit(e){
     try{
       e.preventDefault();
-      const response = await fetch("http://localhost:5000/api/v1/auth/register",{
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/v1/auth/register`,{
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -97,7 +97,7 @@ export default function SignupStepTwo({className, ...props}) {
 
         <Field>
           <FieldLabel htmlFor="duration">Duration</FieldLabel>
-          <Input id="duration" type="Number" placeholder="4" 
+          <Input id="duration" type="text" placeholder="4" 
           value={props.form.duration} onChange={handleChange}  required/>
         </Field>
 

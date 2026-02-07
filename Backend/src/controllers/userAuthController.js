@@ -87,10 +87,8 @@ function logout(req,res){
     res.json({message: "Logged out successfully"});
 }
 
-
 async function register(req, res){
   try {
-    console.log(req.body);
     const { name, email, password, instituteName, department, joiningYear, duration } = req.body;
     const result = registerValidate.safeParse({
         name, email, password, instituteName, department, joiningYear, duration
