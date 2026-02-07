@@ -15,6 +15,10 @@ import AlertBasic from "./Alert"
 export default function SignupStepOne({ className, ...props }) {
 
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [alert, setAlert] = useState({
+    type: "",
+    message: ""
+  });
 
   function handleChange(e){
     const {id, value} = e.target
@@ -28,21 +32,23 @@ export default function SignupStepOne({ className, ...props }) {
     e.preventDefault();
 
     if(props.form.password !== confirmPassword){
-      return (
-      <AlertBasic alert={{type: "error", message: "Entered Password doesn't match with confirmed password"}}/>
-      );
+      setAlert({type: "error", message: "Entered Password doesn't match with confirmed password"});
+      return;
     }
     props.setStep((step) => step+1);
   }
   return (
     <form className={cn("flex flex-col gap-6", className)} {...props} onSubmit={ handleSubmitOne }>
       <FieldGroup>
-        <div className="flex flex-col items-center gap-1 text-center">
-          <h1 className="text-2xl font-bold">Create your account</h1>
-          <p className="text-muted-foreground text-sm text-balance">
-            Fill in the form below to create your account
-          </p>
-        </div>
+        {!alert.message 
+          ? (<div className="flex flex-col items-center gap-1 text-center">
+            <h1 className="text-2xl font-bold">Create your account</h1>
+            <p className="text-muted-foreground text-sm text-balance">
+              Fill in the form below to create your account
+            </p>
+          </div>)
+          : <AlertBasic alert={alert}/>
+        }
 
         <Field>
           <FieldLabel htmlFor="name">Name</FieldLabel>
