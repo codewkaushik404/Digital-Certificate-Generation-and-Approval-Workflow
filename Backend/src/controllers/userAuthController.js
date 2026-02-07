@@ -13,7 +13,7 @@ async function login(req, res){
 
     if (!result.success) {
         const messages = result.error.issues.map(issue => issue.message);
-        return res.status(400).json({ errors: messages });
+        return res.status(400).json({ message: messages });
     }
 
     const user = await User.findOne({ email });
@@ -27,9 +27,8 @@ async function login(req, res){
     }
 
     const positionHolders = await PositionHolder.find({userId: user._id});
-
     let roles = [];
-    if(!positionHolders){
+    if(positionHolders.length == 0){
         roles = ["STUDENT"]
     }
     else{
@@ -47,14 +46,11 @@ async function login(req, res){
             })
         );   
     }
-    console.log(roles);
-    
+
     const payload = {
       id: user._id.toString(),
       roles: roles,
     };
-
-    //console.log(payload);
 
     const token = jwt.sign(payload, process.env.JWT_SECRET_TOKEN, {
       expiresIn: "1h",
@@ -62,15 +58,17 @@ async function login(req, res){
 
     /**
      * 
-     * code used to set a cookie -> use this piece of code when frontend is ready
+     * code used to set a cookie -> use this piece of code when frontend is read
+     */
+
     res.cookie("token", token, {
       maxAge: 60*60*1000,
       httpOnly: true,
+      sameSite: "lax",
       secure: process.env.NODE_ENV === "production"
     });
-     */
 
-    res.json({ message: "Login Successful", token: token });
+    res.json({ message: "Login Successful"});
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: err.message });
@@ -92,6 +90,7 @@ function logout(req,res){
 
 async function register(req, res){
   try {
+    console.log(req.body);
     const { name, email, password, instituteName, department, joiningYear, duration } = req.body;
     const result = registerValidate.safeParse({
         name, email, password, instituteName, department, joiningYear, duration
@@ -102,7 +101,8 @@ async function register(req, res){
     // result.error.issues where each issue has a message that contains the error
     if (!result.success) {
         const messages = result.error.issues.map(issue => issue.message);
-        return res.status(400).json({ errors: messages });
+        //console.log(messages);
+        return res.status(400).json({ message: messages });
     }   
     
     const user = await User.findOne({ email });
