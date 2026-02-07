@@ -16,8 +16,8 @@ const registerValidate = zod.object({
     password: zod.string().min(8),
     instituteName: zod.string().min(5,{message: "Institute Name must be atleast 5 characters"}),
     department: departmentEnum,
-    duration: zod.number().optional().default(4),
-    joiningYear: zod.number().min(2000).max(new Date().getFullYear()),
+    duration: zod.coerce.number().optional().default(4),
+    joiningYear: zod.coerce.number().min(2000).max(new Date().getFullYear()),
 });
 
 module.exports = {
