@@ -9,12 +9,19 @@ async function seedOrgs() {
     
     await Organization.deleteMany({});
 
-
     // Fetch all positions
     const positions = await Position.find({});
     const posMap = {};
-    positions.forEach(p => posMap[p.title] = p._id);
+    for (const p of positions) {
+      posMap[p.title] = p._id;
+    }
 
+    const requiredPositions = ["PRESIDENT", "TEAM-LEAD", "CLUB-COORDINATOR", "CORE-TEAM", "HOD", "FACULTY", "ADMIN"];
+    const missingPositions = requiredPositions.filter(title => !posMap[title]);
+    if (missingPositions.length > 0) {
+      throw new Error(`Missing required positions: ${missingPositions.join(", ")}. Run seedPosition first.`);
+    }
+    
     const orgs = [
         {
           name: "AI_CLUB",
