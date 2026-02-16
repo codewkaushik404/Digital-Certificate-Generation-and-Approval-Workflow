@@ -1,4 +1,10 @@
 const generateToken = require("./generateToken");
+const jwt = require("jsonwebtoken");
+
+function generateToken(payload){
+     const token = jwt.sign(payload, process.env.JWT_SECRET_TOKEN, { expiresIn: "1h" });
+     return token;
+}
 
 function createCookie(payload,res){
 
