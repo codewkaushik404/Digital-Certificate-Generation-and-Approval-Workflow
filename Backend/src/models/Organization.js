@@ -1,4 +1,3 @@
-
 const mongoose = require("mongoose");
 
 const organizationSchema = new mongoose.Schema({
@@ -9,10 +8,8 @@ const organizationSchema = new mongoose.Schema({
         type: [{type: mongoose.Schema.Types.ObjectId, ref: "Position", required: true}],
         required: true,
         validate: {
-            validator: {
-                function(positions){
-                    return positions && positions.length > 0;
-                }
+            validator: function(positions){
+                return positions && positions.length > 0;
             }
         }
     }

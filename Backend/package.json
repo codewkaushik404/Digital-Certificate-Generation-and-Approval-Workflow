@@ -20,12 +20,18 @@
   "homepage": "https://github.com/codewkaushik404/Digital-Certificate-Generation-and-Approval-Workflow#readme",
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "connect-mongo": "^5.1.0",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
+    "express-session": "^1.19.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.1.6",
     "nodemon": "^3.1.11",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-local": "^1.0.0",
     "zod": "^4.3.6"
   }
 }
