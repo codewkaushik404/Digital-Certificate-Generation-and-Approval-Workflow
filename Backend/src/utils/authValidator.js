@@ -14,13 +14,17 @@ const registerValidate = zod.object({
     name: zod.string(),
     email: zod.string().regex(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/),
     password: zod.string({message: "Password must be a string"}).min(8, {message: "Password must have at least 8 characters"}),
+});
+
+const onboardingValidate = zod.object({
     instituteName: zod.string().min(5,{message: "Institute Name must be at least 5 characters"}),
     department: departmentEnum,
     duration: zod.coerce.number().optional().default(4),
     joiningYear: zod.coerce.number().min(2000).max(new Date().getFullYear()),
-});
+})
 
 module.exports = {
     registerValidate,
-    loginValidate
+    loginValidate,
+    onboardingValidate
 }

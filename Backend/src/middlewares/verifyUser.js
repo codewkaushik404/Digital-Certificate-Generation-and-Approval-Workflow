@@ -1,26 +1,15 @@
-const jwt = require("jsonwebtoken");
 
 function verifyUser(req, res, next){
-
-    const header = req.headers.authorization;
-    if(!header || !header.startsWith("Bearer ")){
-       res.status(401).json({message: "User not authenticated"});
-    }
-    //const { token } = req.cookies.token;
-    const token = header.split(" ")[1];
-    if(!token){
-        res.status(401).json({message: "User not authenticated"});
-    }
-
-    try{
-        const decoded = jwt.verify(token, process.env.JWT_SECRET_TOKEN);
-        req.user = decoded;
-        console.log(jwt.decode(token));
-        console.log(decoded);
-        next();
-    }catch(err){
-        res.status(401).json({message: "Invalid token"});
-    }
+    /**
+     * 1. Cookie content -> unique Session ID hashed with secret
+     * FLOW: 
+     * 2. browser will send cookie with each request
+     * 3. server will look for the session ID in cookie with sessionID's in session store
+     * 4. If found, run deserialize user
+     * 5. Attach user obj to req [req.user]
+     */
+    if(req.isAuthenticated && req.isAuthenticated()) return next();
+    return res.status(401).json({message: "Invaid user credentials"});
 }
 
 module.exports = verifyUser;
