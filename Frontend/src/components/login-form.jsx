@@ -13,10 +13,11 @@ import {
 import { Input } from "@/components/ui/input"
 import { useState} from "react"
 import AlertBasic from "./Alert";
-import { useNavigate } from "react-router-dom"
-
+import { Link, useNavigate } from "react-router-dom"
+import { useUserContext } from "@/context/userContext"
 export function LoginForm({ className, ...props }) {
 
+  const {setIsUserLoggedIn, setIsOnboardingComplete} = useUserContext();
   const [form, setForm] = useState({
     email: "",
     password: ""
@@ -41,7 +42,7 @@ export function LoginForm({ className, ...props }) {
     try{
       e.preventDefault();
       //console.log("Form submitted with data:", form);
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/v1/auth/login`,{
+      const res = await fetch(`http://localhost:5000/api/v1/auth/login`,{
         method: "POST",
         headers:{
           "Content-Type": "application/json",
@@ -60,15 +61,16 @@ export function LoginForm({ className, ...props }) {
       })
 
       
-      const data = await response.json();
-      if(!response.ok) setAlert({type: "error", message: data.message || "Something went wrong"});
+      const response = await res.json();
+      if(!res.ok) setAlert({type: "error", message: response.message || "Something went wrong"});
       else{
-        setAlert({type: "success", message: data.message || "Login successful" });
+        setIsUserLoggedIn(response.data || {});
+        setIsOnboardingComplete(response.data.onboardingComplete || false);
+        setAlert({type: "success", message: response.message || "Login successful" });
         setForm({email: "", password: ""});
         setTimeout(()=>{
-          navigate("/dashboard");
-        },2000);
-        
+          navigate("/");
+        },2000)
       }
     }
     catch(err){
@@ -116,9 +118,15 @@ export function LoginForm({ className, ...props }) {
               <Field>
                 <Button type="submit">Login</Button>
               </Field>
+
+              <Button variant="outline" type="button" 
+                onClick={ () => { window.location.href="http://localhost:5000/api/v1/auth/google" }}>                
+                <img src="/google.png" width={20}></img>
+                  Login with Google
+              </Button>
     
               <FieldDescription className="text-center">
-                Don't have an account? <a href="/register">Sign up</a>
+                Don't have an account? <Link to="/register" className="text-sm font-normal">Register</Link>
               </FieldDescription>
             </FieldGroup>
           </form>

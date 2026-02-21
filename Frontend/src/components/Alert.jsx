@@ -7,6 +7,6 @@ export default function AlertBasic({alert}) {
   return (
     <Alert variant={alert.type === "success" ? "default" : "destructive"} className="max-w-md">
       { alert.type === "success"? <CheckCircle2Icon /> : <AlertCircleIcon /> }
-      <AlertTitle>{alert.message}</AlertTitle>
+      <AlertDescription>{alert.message}</AlertDescription>
     </Alert>
   )}
