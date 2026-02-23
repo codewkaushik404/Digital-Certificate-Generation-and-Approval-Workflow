@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { login, logout, register, onboarding} = require("../../controllers/auth/userAuthController");
+const { login, logout, register, onboarding, forgotPassword } = require("../../controllers/auth/userAuthController");
 const verifyUser = require("../../middlewares/verifyUser");
 const passport = require("../../config/passport");
 
@@ -65,11 +65,13 @@ router.put("/onboarding", verifyUser, onboarding);
 //router.delete("/logout", verifyUser, logout);
 router.delete("/logout", verifyUser, logout);
 
+router.post("/forgot-password",forgotPassword);
+
 //GET /api/v1/auth/me -> to check if user is authenticated or not for protected routes
 router.get("/me", verifyUser, (req, res)=>{
     // Return user data similar to login response
 
-    const {name, email, onboardingComplete, _id} = req.user;
+    const {name, onboardingComplete, _id} = req.user;
     return res.json({
         message: "User is authenticated", 
         success: true,

@@ -2,7 +2,9 @@ const User = require("../../models/User");
 const passport = require("../../config/passport");
 const PositionHolder = require("../../models/PositionHolder");
 const Position = require("../../models/Position");
-const { loginValidate, registerValidate, onboardingValidate } = require("../../utils/authValidator");
+const { loginValidate, registerValidate, onboardingValidate, zodEmail } = require("../../utils/authValidator");
+const sendResetToken = require("../../utils/sendResetToken");
+const sendEmail = require("../../services/sendEmail");
 
 async function login(req, res){
   passport.authenticate("local", (err, user, info)=>{
@@ -95,7 +97,7 @@ async function onboarding(req,res){
       if (!req.user) {
         return res.status(401).json({ message: "User not authenticated" });
       }
-      console.log(req.user);
+      //console.log(req.user);
 
       const {instituteName, department, joiningYear, duration} = req.body;
 
@@ -130,7 +132,7 @@ async function onboarding(req,res){
       
       // Update req.user to reflect the changes (for subsequent requests in same session)
       req.user.onboardingComplete = onboardingComplete;
-      
+  
       return res.json({ message: "Onboarding Successful", data: onboardingComplete});
 
     }catch (err) {
@@ -139,9 +141,36 @@ async function onboarding(req,res){
     }
 }
 
+
+async function forgotPassword(req, res){
+  console.log(req.body);
+  const {email} = req.body;
+  const validation = zodEmail.safeParse(email);
+  if(!validation.success){
+    let errors = validation.error.issues.map((issue) => issue.message);
+    return res.status(400).json({message: errors});
+  }
+
+  const user = await User.findOne({email: email});
+  if(user){
+    if(!user.strategy.includes("local")){
+      return res.status(400).json({message: "This email is linked with Google Login. Please use 'Sign in with Google' instead."})
+    }
+
+    const resetToken = sendResetToken(user._id, email);  
+    const link = `${req.protocol}://${req.get("host")}/reset-password?token=${resetToken}`;
+    //console.log(resetToken);
+    //console.log(link);
+    await sendEmail(email, link);
+  }
+
+  return res.json({message: "If an account with that email exists, a reset link has been sent."});
+}
+
 module.exports = {
     login,
     logout,
     register,
-    onboarding
+    onboarding,
+    forgotPassword
 }

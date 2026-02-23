@@ -4,8 +4,10 @@ const roleEnum = zod.enum(["ADMIN", "FACULTY", "HOD", "TEAM-LEAD", "CORE-TEAM", 
 const departmentEnum = zod.enum(["CSE", "AIML", "ISE", "CIVIL", "ECE", "EEE", "MECH"], 
     {message: "Invalid department name"});
 
+const zodEmail = zod.string().regex(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/);
+
 const loginValidate = zod.object({
-    email: zod.string().regex(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/),
+    email: zodEmail,
     password: zod.string({message: "Password must be a string"}).min(8, {message: "Password must have at least 8 characters"})
 });
 
@@ -26,5 +28,6 @@ const onboardingValidate = zod.object({
 module.exports = {
     registerValidate,
     loginValidate,
-    onboardingValidate
+    onboardingValidate,
+    zodEmail
 }
