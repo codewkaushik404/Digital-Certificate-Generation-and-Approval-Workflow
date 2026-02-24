@@ -25,7 +25,7 @@ app.use(session({
         sameSite: "lax",
         maxAge: 60*60*1000
     },
-    secret: process.env.SECRET,
+    secret: process.env.SESSION_SECRET,
     store: MongoStore.create({
         mongoUrl: process.env.MONGODB_URI,
         ttl: 60*60*1000,

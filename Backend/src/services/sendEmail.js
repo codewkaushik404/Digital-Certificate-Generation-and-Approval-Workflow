@@ -38,19 +38,6 @@ async function sendEmail(email, link){
         from: `Certify Support Team <${process.env.EMAIL_USER}>`,
         to: email,
         subject: "Password Reset Request – Action Required",
-        text: `
-        Hello,
-        We received a request to reset your password.
-        If you initiated this request, please use the link below to set a new password:
-
-        ${link}
-
-        If you did not request a password reset, you can safely ignore this email.
-        This link will expire in 10 minutes for security reasons.
-
-        Regards,
-        Certify Support Team
-        `,
         html: `
                 <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
                     <h2 style="color: #111;">Password Reset Request</h2>
@@ -58,16 +45,16 @@ async function sendEmail(email, link){
                     <p>We received a request to reset your password.</p>
                     <p>
                         Click the button below to set a new password. This link will expire in 
-                        <strong>15 minutes</strong>.
+                        <strong>10 minutes</strong>.
                     </p>
                     <p style="margin: 20px 0;">
                         <a href="${link}" 
                         style="
-                            background-color: #111;
+                            background-color: #151515;
                             color: #fff;
                             padding: 12px 20px;
                             text-decoration: none;
-                            border-radius: 4px;
+                            border-radius: 5px;
                             display: inline-block;
                         ">
                         Reset Password

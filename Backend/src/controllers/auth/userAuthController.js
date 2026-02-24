@@ -5,6 +5,7 @@ const Position = require("../../models/Position");
 const { loginValidate, registerValidate, onboardingValidate, zodEmail } = require("../../utils/authValidator");
 const sendResetToken = require("../../utils/sendResetToken");
 const sendEmail = require("../../services/sendEmail");
+const jwt = require("jsonwebtoken");
 
 async function login(req, res){
   passport.authenticate("local", (err, user, info)=>{
@@ -143,7 +144,7 @@ async function onboarding(req,res){
 
 
 async function forgotPassword(req, res){
-  console.log(req.body);
+  //console.log(req.body);
   const {email} = req.body;
   const validation = zodEmail.safeParse(email);
   if(!validation.success){
@@ -157,8 +158,8 @@ async function forgotPassword(req, res){
       return res.status(400).json({message: "This email is linked with Google Login. Please use 'Sign in with Google' instead."})
     }
 
-    const resetToken = sendResetToken(user._id, email);  
-    const link = `${req.protocol}://${req.get("host")}/reset-password?token=${resetToken}`;
+    const resetToken = sendResetToken(user._id);  
+    const link = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
     //console.log(resetToken);
     //console.log(link);
     await sendEmail(email, link);
@@ -167,10 +168,37 @@ async function forgotPassword(req, res){
   return res.json({message: "If an account with that email exists, a reset link has been sent."});
 }
 
+
+async function resetPassword(req, res){
+  const {token, newPassword} = req.body;
+  try{
+    if(!token || !newPassword){
+      return res.status(400).json({message: "Invalid request"});
+    }
+    const decoded = jwt.verify(token,process.env.RESET_TOKEN_SECRET);
+    const {id} = decoded;
+    
+    const user = await User.findOne({_id: id});
+    if(!user) return res.status(401).json({message: "Invalid user credentials"});
+
+    //findById, findByIdAndUpdate, updateOne, updateMany doesnt run pre save middleware
+    
+    user.password = newPassword;
+    await user.save();
+
+    return res.json({message: "Password reset successful"});
+
+  }catch(err){
+    console.log(err.message);
+    return res.status(401).json({message: "Invalid or expired token sent"});
+  }
+}
+
 module.exports = {
     login,
     logout,
     register,
     onboarding,
-    forgotPassword
+    forgotPassword,
+    resetPassword
 }

@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { login, logout, register, onboarding, forgotPassword } = require("../../controllers/auth/userAuthController");
+const { login, logout, register, onboarding, forgotPassword, resetPassword } = require("../../controllers/auth/userAuthController");
 const verifyUser = require("../../middlewares/verifyUser");
 const passport = require("../../config/passport");
 
@@ -65,7 +65,11 @@ router.put("/onboarding", verifyUser, onboarding);
 //router.delete("/logout", verifyUser, logout);
 router.delete("/logout", verifyUser, logout);
 
+//api/v1/auth/forgot-password 
+// Rest Link sent to email using Nodemailer
 router.post("/forgot-password",forgotPassword);
+
+router.patch("/reset-password", resetPassword);
 
 //GET /api/v1/auth/me -> to check if user is authenticated or not for protected routes
 router.get("/me", verifyUser, (req, res)=>{
