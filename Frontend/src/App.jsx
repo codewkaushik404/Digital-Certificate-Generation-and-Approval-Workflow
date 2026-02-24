@@ -7,6 +7,9 @@ import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import { UserContext } from "./context/userContext";
 import Redirect from "./components/RoleRedirect";
+import ForgotPasswordPage from "./pages/ForgotPassword";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
+
 
 function App() {
 
@@ -24,6 +27,8 @@ function App() {
           <Route path="/login" element={<LoginPage></LoginPage>}></Route>
           <Route path="/register" element={<RegisterPage></RegisterPage>}></Route>
           <Route path="/onboarding" element={<OnboardingPage></OnboardingPage>}></Route>
+          <Route path="/forgot-password" element={<ForgotPasswordPage />}></Route>
+          <Route path="/reset-password" element={<ResetPasswordPage />}></Route>
           <Route path="/dashboard" element={ <ProtectedRoute>
             <Dashboard />
           </ProtectedRoute> }></Route>
