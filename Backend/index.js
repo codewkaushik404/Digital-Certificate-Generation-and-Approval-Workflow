@@ -41,13 +41,13 @@ app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session())
 
-
 const dbConnection = require("./src/config/dbConfig");
 const userAuthRoutes = require("./src/routes/auth/user.auth");
 const orgRoutes = require("./src/routes/organization.routes");
 const userRoutes = require("./src/routes/user.routes");
 const dashboardRoute = require("./src/routes/dashboard.route");
 
+app.get("/", (req, res) => res.send(`Server is running successfully on PORT:  ${PORT}`));
 app.use("/api/v1/auth",userAuthRoutes);
 app.use("/api/v1/orgs",orgRoutes);
 app.use("/api/v1/users",userRoutes);
