@@ -4,9 +4,9 @@
   "description": "Certificate Generation and Approval System. A Role-Based and Auditable Workflow for Digital Certificate Issuance",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -28,6 +28,7 @@
     "express-session": "^1.19.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.1.6",
+    "nodemailer": "^8.0.1",
     "nodemon": "^3.1.11",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
