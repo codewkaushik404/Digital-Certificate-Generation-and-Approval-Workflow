@@ -1,0 +1,18 @@
+
+services: 
+  mongodb:
+    image: mongo
+    container_name: "kaushik_mongo"
+    volumes: 
+      - "kaushik_volume:/data/db"
+  backend:
+    image: "backend"
+    container_name: "backend"
+    ports: 
+      - "5000:5000"
+    depends_on:
+      - "mongodb"
+    environment:
+      MONGODB_URI: "mongodb://kaushik_mongo:27017"
+volumes:
+  kaushik_volume:
